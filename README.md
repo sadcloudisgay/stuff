@@ -19,3 +19,5 @@ NUKE-BYPASS : sudo ./HiperOVH %ip %port
 CLOUDFLARE : sudo ./cloudflare %ip 10 -1 300
 
 ETHERA : sudo ./ETHERA %ip %port
+
+CPU-SURGE : sudo ./CPU-SURGE TCP %ip% %port% 300
