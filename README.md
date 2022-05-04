@@ -21,3 +21,5 @@ CLOUDFLARE : sudo ./cloudflare %ip 10 -1 300
 ETHERA : sudo ./ETHERA %ip %port
 
 CPU-SURGE : sudo ./CPU-SURGE TCP %ip% %port% 300
+
+VALID-SYN : sudo ./WRA %ip% %port% 10 -1 300
