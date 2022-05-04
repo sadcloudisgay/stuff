@@ -31,3 +31,5 @@ NFO : sudo ./NFO %ip% %port% 10 -1 300
 UDP-BYPASSV2 : sudo perl UDP-BYPASS-V2.pl %ip% %port% 5500 300
 
 UDP-BYPASS : sudo perl UDP-BYPASS.pl %ip% 300
+
+NULL : sudo perl UDP_NULL.pl %ip% 300
