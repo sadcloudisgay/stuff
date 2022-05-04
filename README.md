@@ -35,3 +35,7 @@ UDP-BYPASS : sudo perl UDP-BYPASS.pl %ip% 300
 NULL : sudo perl UDP_NULL.pl %ip% 300
 
 PATH : sudo perl UDP_BPSS.pl %ip% %port% 5500 300
+
+UDP-MIX : sudo perl UDP_MIX.pl %ip% 300
+
+TCP_NUKE : sudo perl TCP_VOX.pl %ip% 300
