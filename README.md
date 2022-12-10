@@ -50,4 +50,4 @@ Twiks : sudo ./Twiks %ip% %port%
 
 35 : sudo perl 35.pl %ip% %port% 1000 300
 
-korkut : sudo ./korkut2 %ip% %port%
+korkut : sudo ./korkut2 %ip% %port% 10 -1 9999
