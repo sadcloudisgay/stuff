@@ -6,7 +6,7 @@ import sys
 
 def is_pip_installed():
     try:
-        subprocess.check_call(["pip", "--version"])
+        subprocess.check_call(["python3", "-m", "pip", "--version"])
         return True
     except subprocess.CalledProcessError:
         return False
