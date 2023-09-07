@@ -44,6 +44,7 @@ def run_command_with_timeout(command, timeout_seconds):
             current_time = time.time()
             elapsed_time = current_time - start_time
             if elapsed_time >= timeout_seconds:
+                print(f"Attempting to kill process {process.pid} after {timeout_seconds} seconds...")
                 # Kill the process if it exceeds the timeout
                 process.kill()
                 process.wait()
