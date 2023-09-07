@@ -8,8 +8,10 @@ def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
         return True
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        print(f"Error checking if pip is installed: {e}")
         return False
+        
 
 def install_pip():
     try:
@@ -43,10 +45,12 @@ def run_command_with_timeout(command, timeout_seconds):
             elapsed_time = current_time - start_time
             if elapsed_time >= timeout_seconds:
                 # Kill the process if it exceeds the timeout
-                process.terminate()
+                process.kill()
                 process.wait()
                 print(f"Process killed after {timeout_seconds} seconds.")
                 break
+
+            time.sleep(0.1)  # Adjust the sleep interval as needed
 
         return process.returncode
 
