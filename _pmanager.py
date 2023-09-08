@@ -54,7 +54,7 @@ def run_command_with_timeout(command, timeout_seconds):
                 # If the process is still running, forcefully kill it using 'kill' command
                 if process.poll() is None:
                     try:
-                        subprocess.check_call(["kill", "-9", str(pid)])  # Force kill using 'kill -9'
+                        subprocess.check_call(["sudo", "kill", "-9", str(pid)])
                         print(f"Process (PID {pid}) killed forcefully after {timeout_seconds} seconds.")
                     except subprocess.CalledProcessError:
                         print(f"Failed to forcefully kill the process (PID {pid}).")
