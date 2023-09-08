@@ -1,86 +1,43 @@
 import subprocess
-import time
+import psutil
 import os
 import signal
+import time
 import sys
 
-def is_pip_installed():
+def run_background_process(command, time_param):
     try:
-        subprocess.check_call(["python3", "-m", "pip", "--version"])
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"Error checking if pip is installed: {e}")
-        return False
-        
-
-def install_pip():
-    try:
-        subprocess.check_call(["sudo", "apt-get", "update"])
-        subprocess.check_call(["sudo", "apt-get", "install", "-y", "python3-pip"])
-    except subprocess.CalledProcessError as e:
-        print(f"Error installing pip: {e}")
-        sys.exit(1)
-
-def install_missing_packages(packages):
-    for package in packages:
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-        except subprocess.CalledProcessError as e:
-            print(f"Error installing {package}: {e}")
-            sys.exit(1)
-
-def run_command_with_timeout(command, timeout_seconds):
-    try:
-        # Start the process
+        # Start the background process
         process = subprocess.Popen(command, shell=True)
 
-        # Get the PID of the process
+        # Wait for the specified time (in seconds)
+        time.sleep(time_param)
+
+        # Attempt to kill the process using subprocess.terminate()
+        process.terminate()
+        process.wait()
+        print(f"Process with command '{command}' has been forcefully terminated (Method: subprocess.terminate())")
+
+        # Attempt to kill the process using psutil
         pid = process.pid
+        process = psutil.Process(pid)
+        process.terminate()
+        process.wait()
+        print(f"Process with command '{command}' (PID {pid}) has been forcefully terminated (Method: psutil)")
 
-        # Wait for the process to complete or timeout
-        start_time = time.time()
-        while True:
-            return_code = process.poll()
-            if return_code is not None:
-                break
-
-            current_time = time.time()
-            elapsed_time = current_time - start_time
-            if elapsed_time >= timeout_seconds:
-                # forcefully kill it using 'kill' command
-                os.kill(pid, signal.SIGKILL)
-                os.waitpid(-1, os.WNOHANG)
-                return 1
-                
-
-            # Add a short sleep to reduce CPU usage
-            time.sleep(0.1)  # Adjust the sleep interval as needed
-
-        return process.returncode
-
+        # Attempt to kill the process using os.kill (for UNIX-like systems)
+        os.kill(pid, signal.SIGTERM)
+        process.wait()
+        print(f"Process with command '{command}' (PID {pid}) has been forcefully terminated (Method: os.kill())")
     except Exception as e:
-        print(f"Error: {str(e)}")
-        return 1
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
-    required_packages = ["subprocess"]
-
-    if not is_pip_installed():
-        print("pip is not installed. Attempting to install it...")
-        install_pip()
-
-    try:
-        import subprocess
-    except ImportError:
-        print("The 'subprocess' module is missing. Installing it...")
-        install_missing_packages(["subprocess"])
-
     if len(sys.argv) != 3:
-        print("Usage: python pmanager.py <command> <timeout_seconds>")
+        print("Usage: python script.py <command> <time_in_seconds>")
         sys.exit(1)
 
     command = sys.argv[1]
-    timeout_seconds = float(sys.argv[2])
+    time_param = int(sys.argv[2])
 
-    return_code = run_command_with_timeout(command, timeout_seconds)
-    sys.exit(return_code)
+    run_background_process(command, time_param)
