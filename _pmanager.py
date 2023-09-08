@@ -34,6 +34,9 @@ def run_command_with_timeout(command, timeout_seconds):
         # Start the process
         process = subprocess.Popen(command, shell=True)
 
+        # Get the PID of the process
+        pid = process.pid
+
         # Wait for the process to complete or timeout
         start_time = time.time()
         while True:
@@ -44,13 +47,22 @@ def run_command_with_timeout(command, timeout_seconds):
             current_time = time.time()
             elapsed_time = current_time - start_time
             if elapsed_time >= timeout_seconds:
-                print(f"Attempting to kill process {process.pid} after {timeout_seconds} seconds...")
-                # Kill the process if it exceeds the timeout
-                process.kill()
-                process.wait()
-                print(f"Process killed after {timeout_seconds} seconds.")
+                # Attempt to terminate the process gracefully
+                process.terminate()
+                time.sleep(2)  # Allow some time for graceful termination
+
+                # If the process is still running, forcefully kill it using 'kill' command
+                if process.poll() is None:
+                    try:
+                        subprocess.check_call(["kill", "-9", str(pid)])  # Force kill using 'kill -9'
+                        print(f"Process (PID {pid}) killed forcefully after {timeout_seconds} seconds.")
+                    except subprocess.CalledProcessError:
+                        print(f"Failed to forcefully kill the process (PID {pid}).")
+                else:
+                    print(f"Process (PID {pid}) terminated gracefully after {elapsed_time} seconds.")
                 break
 
+            # Add a short sleep to reduce CPU usage
             time.sleep(0.1)  # Adjust the sleep interval as needed
 
         return process.returncode
