@@ -47,20 +47,11 @@ def run_command_with_timeout(command, timeout_seconds):
             current_time = time.time()
             elapsed_time = current_time - start_time
             if elapsed_time >= timeout_seconds:
-                # Attempt to terminate the process gracefully
-                process.terminate()
-                time.sleep(2)  # Allow some time for graceful termination
-
-                # If the process is still running, forcefully kill it using 'kill' command
-                if process.poll() is None:
-                    try:
-                        subprocess.check_call(["sudo", "kill", "-9", str(pid)])
-                        print(f"Process (PID {pid}) killed forcefully after {timeout_seconds} seconds.")
-                    except subprocess.CalledProcessError:
-                        print(f"Failed to forcefully kill the process (PID {pid}).")
-                else:
-                    print(f"Process (PID {pid}) terminated gracefully after {elapsed_time} seconds.")
-                break
+                # forcefully kill it using 'kill' command
+                os.kill(pid, signal.SIGKILL)
+                os.waitpid(-1, os.WNOHANG)
+                return 1
+                
 
             # Add a short sleep to reduce CPU usage
             time.sleep(0.1)  # Adjust the sleep interval as needed
