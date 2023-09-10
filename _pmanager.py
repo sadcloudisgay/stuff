@@ -3,6 +3,7 @@ import time
 import sys
 import os
 import signal
+import requests
 
 def is_pip_installed():
     try:
@@ -28,7 +29,7 @@ def install_missing_packages(packages):
             print(f"Error installing {package}: {e}")
             sys.exit(1)
 
-def run_command_with_timeout(command, timeout_seconds):
+def run_command_with_timeout(command, timeout_seconds, uuid):
     try:
         # Start the process
         process = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
@@ -49,11 +50,10 @@ def run_command_with_timeout(command, timeout_seconds):
             if elapsed_time >= timeout_seconds:
                 print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
-
+                requests.get(f"http://192.168.0.32:3000/ended", params={"uuid": uuid})
                 return 1
 
-            # Add a short sleep to reduce CPU usage
-            time.sleep(1)  # Adjust the sleep interval as needed
+            time.sleep(0.5)  # Adjust the sleep interval as needed
 
         return process.returncode
 
@@ -74,12 +74,13 @@ if __name__ == "__main__":
         print("The 'subprocess' module is missing. Installing it...")
         install_missing_packages(["subprocess"])
 
-    if len(sys.argv) != 3:
-        print("Usage: python pmanager.py <command> <timeout_seconds>")
+    if len(sys.argv) != 4:
+        print("Usage: python _pmanager.py <command> <timeout_seconds> <uuid>")
         sys.exit(1)
 
     command = sys.argv[1]
     timeout_seconds = float(sys.argv[2])
+    uuid = sys.argv[3]
 
-    return_code = run_command_with_timeout(command, timeout_seconds)
+    return_code = run_command_with_timeout(command, timeout_seconds, uuid)
     sys.exit(return_code)
