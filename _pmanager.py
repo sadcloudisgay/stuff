@@ -1,8 +1,8 @@
 import subprocess
 import time
+import sys
 import os
 import signal
-import sys
 
 def is_pip_installed():
     try:
@@ -11,7 +11,6 @@ def is_pip_installed():
     except subprocess.CalledProcessError as e:
         print(f"Error checking if pip is installed: {e}")
         return False
-        
 
 def install_pip():
     try:
@@ -32,10 +31,11 @@ def install_missing_packages(packages):
 def run_command_with_timeout(command, timeout_seconds):
     try:
         # Start the process
-        process = subprocess.Popen(command, shell=True)
+        process = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
 
         # Get the PID of the process
         pid = process.pid
+        print(f"Started process with PID {pid}")
 
         # Wait for the process to complete or timeout
         start_time = time.time()
@@ -47,17 +47,13 @@ def run_command_with_timeout(command, timeout_seconds):
             current_time = time.time()
             elapsed_time = current_time - start_time
             if elapsed_time >= timeout_seconds:
-                # forcefully kill it using 'terminate' command
-                process.terminate()
-                # forcefully kill it using 'kill' command
-                os.kill(pid, signal.SIGKILL)
-                # forcefully kill it using 'kill' command
-                os.system("kill -9 {}".format(pid))
+                print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
+                os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
+
                 return 1
-                
 
             # Add a short sleep to reduce CPU usage
-            time.sleep(0.1)  # Adjust the sleep interval as needed
+            time.sleep(1)  # Adjust the sleep interval as needed
 
         return process.returncode
 
