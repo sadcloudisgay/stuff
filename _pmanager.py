@@ -1,3 +1,6 @@
+import subprocess
+import sys
+
 def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
@@ -43,8 +46,12 @@ def run_command_with_timeout(command, timeout_seconds, uuid):
             if elapsed_time >= timeout_seconds:
                 print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
-                requests.get(f"http://192.168.0.32:3000/ended", params={"uuid": uuid})
-                return 1
+                response = requests.get(f"http://192.168.0.32:3000/ended", params={"uuid": uuid})
+                if response.json()["success"]:
+                    return 0
+                else:
+                    print(f"Error: {response.json()['error']}")
+                    return 1
 
             time.sleep(0.5)  # Adjust the sleep interval as needed
 
