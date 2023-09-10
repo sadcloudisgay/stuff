@@ -1,10 +1,3 @@
-import subprocess
-import time
-import sys
-import os
-import signal
-import requests
-
 def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
@@ -62,17 +55,26 @@ def run_command_with_timeout(command, timeout_seconds, uuid):
         return 1
 
 if __name__ == "__main__":
-    required_packages = ["subprocess"]
+    required_packages = ["subprocess", "time", "sys", "os", "signal", "requests"]
 
     if not is_pip_installed():
         print("pip is not installed. Attempting to install it...")
         install_pip()
 
-    try:
-        import subprocess
-    except ImportError:
-        print("The 'subprocess' module is missing. Installing it...")
-        install_missing_packages(["subprocess"])
+    # try import
+    for package in required_packages:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"Package {package} is not installed. Attempting to install it...")
+            install_missing_packages([package])
+    
+    import subprocess
+    import time
+    import sys
+    import os
+    import signal
+    import requests
 
     if len(sys.argv) != 4:
         print("Usage: python _pmanager.py <command> <timeout_seconds> <uuid>")
