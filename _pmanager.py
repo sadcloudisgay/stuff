@@ -83,7 +83,7 @@ if __name__ == "__main__":
     import signal
     import requests
 
-    if len(sys.argv) != 4:
+    if len(sys.argv) < 4:
         print("Usage: python _pmanager.py <command> <timeout_seconds> <uuid> <callbackurl>")
         sys.exit(1)
 
