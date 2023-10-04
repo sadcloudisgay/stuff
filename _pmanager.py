@@ -25,6 +25,18 @@ def install_missing_packages(packages):
             print(f"Error installing {package}: {e}")
             sys.exit(1)
 
+def send_error_to_callback(uuid, error):
+    try:
+        response = requests.get(callbackurl + "/error", params={"uuid": uuid, "error": error})
+        if response.json()["success"]:
+            return 0
+        else:
+            print(f"Error: {response.json()['error']}")
+            return 1
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return 1
+
 def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
     try:
         # Start the process
@@ -46,7 +58,7 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
             if elapsed_time >= timeout_seconds:
                 print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
-                response = requests.get(callbackurl, params={"uuid": uuid})
+                response = requests.get(callbackurl + "/ended", params={"uuid": uuid})
                 if response.json()["success"]:
                     return 0
                 else:
@@ -58,7 +70,7 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
         return process.returncode
 
     except Exception as e:
-        print(f"Error: {str(e)}")
+        send_error_to_callback(uuid, str(e))
         return 1
 
 if __name__ == "__main__":
@@ -93,4 +105,8 @@ if __name__ == "__main__":
     callbackurl = sys.argv[4]
 
     return_code = run_command_with_timeout(command, timeout_seconds, uuid, callbackurl)
+
+    if return_code != 0:
+        send_error_to_callback(uuid, "Errorcode " + str(return_code))
+
     sys.exit(return_code)
