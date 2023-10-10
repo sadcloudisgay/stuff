@@ -128,6 +128,9 @@ if __name__ == "__main__":
     uuid = sys.argv[3]
     callbackurl = sys.argv[4]
 
+    t = threading.Thread(target=attack_status_thread)
+    t.start()
+
     return_code = run_command_with_timeout(command, timeout_seconds, uuid, callbackurl)
 
     if return_code != 0:
