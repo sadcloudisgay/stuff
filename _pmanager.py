@@ -1,9 +1,6 @@
 import subprocess
 import sys
 
-process = NULL
-pid = NULL
-
 def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
