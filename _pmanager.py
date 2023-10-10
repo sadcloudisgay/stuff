@@ -1,6 +1,9 @@
 import subprocess
 import sys
 
+process = NULL
+pid = NULL
+
 def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
@@ -36,6 +39,30 @@ def send_error_to_callback(uuid, error):
     except Exception as e:
         print(f"Error: {str(e)}")
         return 1
+
+def check_attack_status(uuid, callbackurl):
+    try:
+        response = requests.get(callbackurl + "/status", params={"uuid": uuid})
+        if response.json()["success"]:
+            return response.json()["status"]
+        else:
+            print(f"Error: {response.json()['error']}")
+            return "error"
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "error"
+
+def attack_status_thread():
+    while True:
+        # every 10 seconds, check if attack status is stopped, if so, kill the process and exit
+        response = requests.get(callbackurl + "/status", params={"uuid": uuid})
+        if response.json()["success"]:
+            status = response.json()["status"]
+            if status == "stopped":
+                print(f"Attack stopped. Exiting...")
+                os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
+                sys.exit(0)
+        time.sleep(10)
 
 def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
     try:
