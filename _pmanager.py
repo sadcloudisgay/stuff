@@ -51,12 +51,12 @@ def check_attack_status(uuid, callbackurl):
 
 def attack_status_thread():
     while True:
-        # every 10 seconds, check if attack status is stopped, if so, kill the process and exit
+        # every 10 seconds, check if attack status is ended, if so, kill the process and exit
         response = requests.get(callbackurl + "/status", params={"uuid": uuid})
         if response.json()["success"]:
             status = response.json()["status"]
-            if status == "stopped":
-                print(f"Attack stopped. Exiting...")
+            if status == "ended":
+                print(f"Attack ended. Exiting...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
                 sys.exit(0)
         time.sleep(10)
