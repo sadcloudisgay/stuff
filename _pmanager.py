@@ -37,29 +37,23 @@ def send_error_to_callback(uuid, error):
         print(f"Error: {str(e)}")
         return 1
 
-def check_attack_status(uuid, callbackurl):
-    try:
-        response = requests.get(callbackurl + "/status", params={"uuid": uuid})
-        if response.json()["success"]:
-            return response.json()["status"]
-        else:
-            print(f"Error: {response.json()['error']}")
-            return "error"
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        return "error"
-
 def attack_status_thread():
     while True:
-        # every 10 seconds, check if attack status is ended, if so, kill the process and exit
-        response = requests.get(callbackurl + "/status", params={"uuid": uuid})
-        if response.json()["success"]:
-            status = response.json()["status"]
-            if status == "ended":
-                print(f"Attack ended. Exiting...")
-                os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
-                sys.exit(0)
-        time.sleep(10)
+        try:
+            # every 5 seconds, check if attack status is ended, if so, kill the process and exit
+            response = requests.get(callbackurl + "/status", params={"uuid": uuid})
+            if response.json()["success"]:
+                status = response.json()["status"]
+                if status == "ended":
+                    print(f"Attack ended. Exiting...")
+                    os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
+                    sys.exit(0)
+            else:
+                print(f"Error: {response.json()['error']}")
+        except Exception as e:
+            print(f"Error: {str(e)}")
+
+        time.sleep(5)
 
 def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
     try:
