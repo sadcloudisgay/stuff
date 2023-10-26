@@ -98,7 +98,7 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
         return 1
 
 if __name__ == "__main__":
-    required_packages = ["subprocess", "time", "sys", "os", "signal", "requests"]
+    required_packages = ["subprocess", "time", "sys", "os", "signal", "requests", "threading"]
 
     if not is_pip_installed():
         print("pip is not installed. Attempting to install it...")
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     import os
     import signal
     import requests
+    import threading
 
     if len(sys.argv) < 4:
         print("Usage: python _pmanager.py <command> <timeout_seconds> <uuid> <callbackurl>")
