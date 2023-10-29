@@ -1,6 +1,8 @@
 import subprocess
 import sys
 
+pid = 0
+
 def is_pip_installed():
     try:
         subprocess.check_call(["python3", "-m", "pip", "--version"])
@@ -46,8 +48,12 @@ def attack_status_thread():
                 status = response.json()["status"]
                 if status == "ended":
                     print(f"Attack ended. Exiting...")
-                    os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
-                    sys.exit(0)
+                    try:
+                        os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
+                        sys.exit(0)
+                    except Exception as e:
+                        print(f"Error: {str(e)}")
+                        sys.exit(1)
             else:
                 print(f"Error: {response.json()['error']}")
         except Exception as e:
