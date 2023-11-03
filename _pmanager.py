@@ -91,7 +91,7 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
 
             current_time = time.time()
             elapsed_time = current_time - start_time
-            print(f"Elapsed time: {elapsed_time} seconds | Time remaining: {timeout_seconds - elapsed_time} seconds")
+            print(f"Time remaining: {round(timeout_seconds - elapsed_time, 2)} seconds")
             if elapsed_time >= timeout_seconds:
                 print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
