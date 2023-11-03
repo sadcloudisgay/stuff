@@ -72,6 +72,12 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
         # Start the process
         process = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
 
+        # check if process gave error
+        if process.returncode != None:
+            print(f"Errorcode {process.returncode}")
+            send_error_to_callback(uuid, "Errorcode " + str(process.returncode))
+            return process.returncode
+
         # Get the PID of the process
         pid = process.pid
         print(f"Started process with PID {pid}")
@@ -85,6 +91,7 @@ def run_command_with_timeout(command, timeout_seconds, uuid, callbackurl):
 
             current_time = time.time()
             elapsed_time = current_time - start_time
+            print(f"Elapsed time: {elapsed_time} seconds | Time remaining: {timeout_seconds - elapsed_time} seconds")
             if elapsed_time >= timeout_seconds:
                 print(f"Process timed out after {timeout_seconds} seconds. Killing process with PID {pid}...")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
