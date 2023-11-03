@@ -58,6 +58,12 @@ def attack_status_thread():
                 print(f"Error: {response.json()['error']}")
         except Exception as e:
             print(f"Error: {str(e)}")
+            if pid != 0:
+                try:
+                    os.killpg(os.getpgid(pid), signal.SIGKILL)  # Kill the process group
+                except Exception as e:
+                    print(f"Error: {str(e)}")
+            sys.exit(1)
 
         time.sleep(5)
 
