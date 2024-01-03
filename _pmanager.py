@@ -11,14 +11,6 @@ def is_pip_installed():
         print(f"Error checking if pip is installed: {e}")
         return False
 
-def install_pip():
-    try:
-        subprocess.check_call(["sudo", "apt-get", "update"])
-        subprocess.check_call(["sudo", "apt-get", "install", "-y", "python3-pip"])
-    except subprocess.CalledProcessError as e:
-        print(f"Error installing pip: {e}")
-        sys.exit(1)
-
 def install_missing_packages(packages):
     for package in packages:
         try:
@@ -114,8 +106,8 @@ if __name__ == "__main__":
     required_packages = ["subprocess", "time", "sys", "os", "signal", "requests", "threading"]
 
     if not is_pip_installed():
-        print("pip is not installed. Attempting to install it...")
-        install_pip()
+        print("FATAL ERROR: pip is not installed. Attempting to install it...")
+        sys.exit(1)
 
     # try import
     for package in required_packages:
