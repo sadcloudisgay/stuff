@@ -1,5 +1,7 @@
 How to use :
 
+./OVH-AMP %ip% %port%
+
 X-STD : sudo ./X-STD %ip% %port%
 
 SSA : sudo ./ssa %ip%
