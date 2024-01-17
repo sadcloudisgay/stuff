@@ -1,8 +1,10 @@
 How to use :
 
-SSA : sudo ./ssa (ip)
+X-STD : sudo ./X-STD %ip% %port%
 
-ETC : sudo ./etc (ip) (port)
+SSA : sudo ./ssa %ip%
+
+ETC : sudo ./etc %ip% %port%
 
 OVH : sudo ./ovh %ip% %port% 9999 0 9999
 
