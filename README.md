@@ -1,6 +1,6 @@
 How to use :
 
-./OVH-AMP %ip% %port%
+OVH-AMP : ./OVH-AMP %ip% %port%
 
 X-STD : sudo ./X-STD %ip% %port%
 
