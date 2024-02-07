@@ -56,4 +56,4 @@ Twiks : sudo ./Twiks %ip% %port%
 
 korkut : sudo ./korkut2 %ip% %port% 10 -1 9999
 
-NFOLAGV2 : sudo ./NFOLagv2 %ip% %port% 1025 0
+NFOLAGV2 : sudo ./NFOLag %ip% %port% 1025 0
